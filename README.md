@@ -23,7 +23,7 @@ results = model.track(source=image, conf=0.3)
 
 From the results we check if there are any violations. This is done by checking if the model classified an object as a violation (no_mask, no_helmet, etc.). If there is a violation, the corresponding counter is incremented.
 
-When a counter exceeds the threshold, an email alert is sent and the counter is reset. To send the email, we start with saving the image showing the violation. We then specify the message's subject, sender, receiver, and content. Finally, we attach the image and send the message.
+When a counter exceeds the threshold, an email alert is sent and the counter is reset. To send the email, we start with saving the image showing the violation to "/runs/detect/track". We then specify the message's subject, sender, receiver, and content. Finally, we attach the image and send the message.
 
 This program is designed to loop constantly. If an error were to occur or the loop were to exit, the program resets by closing the email server and the images are deleted.
 
@@ -36,6 +36,8 @@ To run the program, enter the following command into the terminal:
 ```python ppe.py 'model' 'threshold' 'server email' 'server password' 'receiver email'```
 
 Replacing 'model' with the name of the ".pt" model file, 'threshold' with the number of frames with violations needed to send an alert, 'server email' and 'server password' with the email and password to send the alert from, and 'receiver email' with the email to send the alert to.
+
+WARNING: If you were to end the program using the "Keyboard Interrupt", you will need to delete all folders under "/runs/detect" manually to ensure that the images sent in the alert updates.
 
 ## Setting up the Dataset
 
