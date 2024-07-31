@@ -24,7 +24,7 @@ import sys
 def sendMessage(violationType, model, image, server, sender, receiver):
 
     # NOTE: "show=True" is used for debugging. To be changed to "False" when done 
-    model.track(source=image, show=False, conf=0.3, save=True, show_conf=False) # Saves image to ./runs/detect/track/image0.jpg
+    model.track(source=image, show=False, conf=0.3, save=True, show_conf=False, verbose=False) # Saves image to ./runs/detect/track/image0.jpg
 
     # Set up email
     message = EmailMessage()
@@ -84,6 +84,8 @@ try:
     # checks whether frames were extracted 
     success = 1
 
+    print("Starting Program")
+
     # Loop through each image
     while success:
 
@@ -91,7 +93,7 @@ try:
         success, image = vidObj.read()
 
         # Run the image through the model
-        results = model.track(source=image, conf=0.3)
+        results = model.track(source=image, conf=0.3, verbose=False)
 
         # If there is a object defined as a violation, increase that violation's count
         if results[0].boxes.cls.tolist().count(7) > 0:
@@ -109,7 +111,7 @@ try:
 
         # For each violation type, check if the count surpassed the threshold
         #   If so, send an alert
-
+            
         if maskViolation > threshold:
             sendMessage("MASK", model, image, s, sender, reciever)
             maskViolation = 0
